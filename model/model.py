@@ -41,6 +41,12 @@ class Model:
         self.connesse=len(list(comp_connesse)) #-risultato
 
 
+    def calcolaPercorso(self,partenza,anno):
+        successori=nx.dfs_successors(self.grafo,int(partenza))
+
+        return successori
+
+
 
 
     def getNumNodes(self):

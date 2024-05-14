@@ -16,19 +16,28 @@ class View(ft.UserControl):
 
         self._txt_result = None
 
+
     def load_interface(self):
         # title
         self._title = ft.Text("Country Borders", color="blue", size=24)
         self._page.controls.append(self._title)
 
         #ROW with controls
-        self._txtAnno = ft.TextField(label="Anno")
+        self._txtAnno = ft.TextField(label="Anno",on_change= self._controller.attiva_btn)
         self._btnCalcola = ft.ElevatedButton(text="Calcola Confini", on_click=self._controller.handleCalcola)
         row1 = ft.Row([self._txtAnno, self._btnCalcola], alignment=ft.MainAxisAlignment.CENTER)
         self._page.controls.append(row1)
         # List View where the reply is printed
         self._txt_result = ft.ListView(expand=1, spacing=10, padding=20, auto_scroll=False)
+
+
+        self.btn_percorso=ft.ElevatedButton(text="Calcola Percorso", on_click=self._controller.handlePercorso,disabled=True)
+        self.txt_partenza=ft.Dropdown(disabled=True)
+        row2=ft.Row([self.txt_partenza,self.btn_percorso], alignment=ft.MainAxisAlignment.CENTER)
+        self._page.add(row2)
         self._page.controls.append(self._txt_result)
+
+
         self._page.update()
 
     @property

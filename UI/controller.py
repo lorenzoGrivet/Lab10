@@ -1,4 +1,5 @@
 from operator import attrgetter
+from database.DAO import DAO
 
 import flet as ft
 
@@ -28,7 +29,7 @@ class Controller:
         # for nodo in self._model.grafo.nodes:
         #     self._view._txt_result.controls.append(ft.Text(f"{self._model.idMap[nodo]}: {self._model.grafo.degree(nodo)} vicini"))
 
-        diz_ordinato=(sorted(self._model.idMap.items())
+        diz_ordinato=dict(sorted(self._model.idMap.items() , key=lambda item: item[1].StateNme))
 
         for a in diz_ordinato:
             # print(self._model.idMap[a])
@@ -39,4 +40,28 @@ class Controller:
 
 
         self._view.update_page()
+
+    def handlePercorso(self,e):
+        self._view._txt_result.controls.clear()
+        partenza=self._view.txt_partenza.value
+        anno=self._view._txtAnno.value
+        risultato=self._model.calcolaPercorso(partenza,anno)
+
+        for a in risultato:
+            self._view._txt_result.controls.append(ft.Text(f"{self._model.idMap[a]} -> {self._model.grafo.degree(a)}"))
+
+        self._view.update_page()
+
+    def attiva_btn(self,e):
+        self._view.txt_partenza.disabled=False
+        self._view.btn_percorso.disabled=False
+        self.fillDDPercorso()
+
+
+    def fillDDPercorso(self):
+        anno=self._view._txtAnno.value
+        nodi=DAO().getNodi(anno)
+        for a in nodi:
+
+            self._view.txt_partenza.options.append(ft.dropdown.Option(key=a,text=self._model.idMap[a]))
 
